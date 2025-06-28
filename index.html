@@ -2,7 +2,7 @@
 <html lang="mr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Bhagyoday AI Bhau</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -10,7 +10,6 @@
       href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi:ital@0;1&family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
     />
-
     <style>
       :root {
         --primary-bg: #f4f1ed;
@@ -74,26 +73,17 @@
         opacity: 0.9;
       }
 
-      .chat-window {
-        flex-grow: 1;
-        padding: 20px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-
       .chat-area {
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-        overflow: hidden; /* Prevents overflow from leaking outside */
+        overflow: hidden;
       }
 
       .chat-window {
         flex-grow: 1;
-        overflow-y: auto;
         padding: 20px;
+        overflow-y: auto;
         display: flex;
         flex-direction: column;
         gap: 15px;
@@ -197,14 +187,13 @@
       .typing-indicator .message-content p span:nth-child(2) {
         animation-delay: 0.2s;
       }
+
       .typing-indicator .message-content p span:nth-child(3) {
         animation-delay: 0.4s;
       }
 
       @keyframes bounce {
-        0%,
-        60%,
-        100% {
+        0%, 60%, 100% {
           transform: translateY(0);
         }
         30% {
@@ -212,9 +201,70 @@
         }
       }
 
+      /* Mobile Responsive Design */
       @media (max-width: 768px) {
-        .message-content {
+        .app-container {
+          height: auto;
+          max-height: 100vh;
+          border-radius: 0;
+        }
+
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+          text-align: left;
+          padding: 10px 15px;
+        }
+
+        .logo {
+          width: 40px;
+          height: 40px;
+        }
+
+        header .header-text h1 {
+          font-size: 1.2em;
+        }
+
+        header .header-text h2 {
+          font-size: 0.85em;
+        }
+
+        .chat-window {
+          padding: 10px;
+          gap: 10px;
+        }
+
+        .chat-input-form {
+          flex-direction: column;
+          gap: 10px;
+          padding: 10px;
+        }
+
+        #user-input {
+          width: 100%;
+          padding: 10px 14px;
           font-size: 15px;
+        }
+
+        .chat-input-form button {
+          width: 100%;
+          padding: 12px;
+          font-size: 15px;
+        }
+
+        .message-content {
+          font-size: 14px;
+          padding: 10px 14px;
+        }
+
+        .user-message,
+        .ai-message {
+          max-width: 100%;
+        }
+
+        .avatar {
+          width: 32px;
+          height: 32px;
         }
       }
     </style>
@@ -239,8 +289,7 @@
             <img src="aiBhau.jpg" alt="AI Bhau" class="avatar" />
             <div class="message-content">
               <p>
-                भाग्योदय MENS Parlour मध्ये आपलं स्वागत आहे भाऊ, बोला काय सेवा
-                करू आपली? 😎
+                भाग्योदय MENS Parlour मध्ये आपलं स्वागत आहे भाऊ, बोला काय सेवा करू आपली? 😎
               </p>
             </div>
           </div>
@@ -264,7 +313,6 @@
       const userInput = document.getElementById("user-input");
       const chatWindow = document.getElementById("chat-window");
 
-      // INSERT your API Key here (For testing only – don't use in production)
       const API_KEY = "AIzaSyCqM_JD2yhIwDKk8bfY341IbRkQZ9qgDV0";
 
       const systemInstructionText = `Language: Marathi
@@ -273,7 +321,6 @@ Business Type: Men’s Parlour
 Shop Name: Bhagyoday Men’s Parlour
 Owner Name: Mahesh Jadhav
 Response Style: Like a talkative, fun-loving, witty Marathi bhai.
-... (trimmed for brevity)
 `;
 
       chatForm.addEventListener("submit", async (e) => {
@@ -312,10 +359,7 @@ Response Style: Like a talkative, fun-loving, witty Marathi bhai.
       function addMessageToUI(text, sender) {
         const msg = document.createElement("div");
         msg.className = sender === "user" ? "user-message" : "ai-message";
-        const avatar =
-          sender === "ai"
-            ? `<img src="aiBhau.jpg" class="avatar"/>`
-            : "";
+        const avatar = sender === "ai" ? `<img src="aiBhau.jpg" class="avatar"/>` : "";
         msg.innerHTML = `${avatar}<div class="message-content"><p>${text}</p></div>`;
         chatWindow.appendChild(msg);
         chatWindow.scrollTop = chatWindow.scrollHeight;
