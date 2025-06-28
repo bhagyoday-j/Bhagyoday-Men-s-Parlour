@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="mr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bhagyoday AI Bhau</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi:ital@0;1&family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary-bg: #f4f1ed;
+        --secondary-bg: #ffffff;
+        --text-color: #3d2c2c;
+        --primary-color: #279e49;
+        --user-bubble: #e1f7d5;
+        --ai-bubble: #ffffff;
+        --font-marathi: "Tiro Devanagari Marathi", serif;
+        --font-english: "Poppins", sans-serif;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-english);
+        background-color: var(--primary-bg);
+        color: var(--text-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      .app-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 800px;
+        height: 90vh;
+        background-color: var(--secondary-bg);
+        border-radius: 16px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+      }
+
+      header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-shrink: 0;
+      }
+
+      .logo {
+        width: 50px;
+        height: 50px;
+      }
+
+      header .header-text h1 {
+        margin: 0;
+        font-size: 1.4em;
+      }
+
+      header .header-text h2 {
+        margin: 0;
+        font-size: 0.9em;
+        opacity: 0.9;
+      }
+
+      .chat-window {
+        flex-grow: 1;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .chat-area {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        overflow: hidden; /* Prevents overflow from leaking outside */
+      }
+
+      .chat-window {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .user-message,
+      .ai-message {
+        display: flex;
+        gap: 10px;
+        max-width: 85%;
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      .user-message {
+        align-self: flex-end;
+        flex-direction: row-reverse;
+      }
+
+      .ai-message {
+        align-self: flex-start;
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+
+      .message-content {
+        padding: 12px 18px;
+        border-radius: 20px;
+        font-family: var(--font-marathi);
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      .user-message .message-content {
+        background-color: var(--user-bubble);
+        border-bottom-right-radius: 5px;
+      }
+
+      .ai-message .message-content {
+        background-color: var(--ai-bubble);
+        border: 1px solid #e8e8e8;
+        border-bottom-left-radius: 5px;
+      }
+
+      .chat-input-form {
+        display: flex;
+        padding: 15px;
+        border-top: 1px solid #ccc;
+        background: #fff;
+      }
+
+      #user-input {
+        flex-grow: 1;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        padding: 10px 18px;
+        font-size: 16px;
+        font-family: var(--font-marathi);
+      }
+
+      .chat-input-form button {
+        margin-left: 10px;
+        padding: 10px 20px;
+        border: none;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .typing-indicator .message-content p {
+        padding: 5px 0;
+      }
+
+      .typing-indicator .message-content p span {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: #b0b0b0;
+        border-radius: 50%;
+        margin: 0 2px;
+        animation: bounce 1.4s infinite;
+      }
+
+      .typing-indicator .message-content p span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .typing-indicator .message-content p span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes bounce {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+        }
+        30% {
+          transform: translateY(-8px);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .message-content {
+          font-size: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <header>
+        <img
+          src="https://www.shutterstock.com/image-vector/barber-bearded-man-barbershop-tools-260nw-2171357789.jpg"
+          alt="Barber Icon"
+          class="logo"
+        />
+        <div class="header-text">
+          <h1>Bhagyoday Men’s Parlour</h1>
+          <h2>तुमचं सौंदर्य, आमचं कर्तव्य!</h2>
+        </div>
+      </header>
+
+      <div class="chat-area">
+        <div id="chat-window" class="chat-window">
+          <div class="ai-message">
+            <img src="aiBhau.jpg" alt="AI Bhau" class="avatar" />
+            <div class="message-content">
+              <p>
+                भाग्योदय MENS Parlour मध्ये आपलं स्वागत आहे भाऊ, बोला काय सेवा
+                करू आपली? 😎
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <form id="chat-form" class="chat-input-form">
+          <input
+            type="text"
+            id="user-input"
+            placeholder="तुमचा प्रश्न इथे विचारा..."
+            autocomplete="off"
+            required
+          />
+          <button type="submit">पाठवा ✂️</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const chatForm = document.getElementById("chat-form");
+      const userInput = document.getElementById("user-input");
+      const chatWindow = document.getElementById("chat-window");
+
+      // INSERT your API Key here (For testing only – don't use in production)
+      const API_KEY = "AIzaSyCqM_JD2yhIwDKk8bfY341IbRkQZ9qgDV0";
+
+      const systemInstructionText = `Language: Marathi
+Tone: Friendly, Informal, and Humorous
+Business Type: Men’s Parlour
+Shop Name: Bhagyoday Men’s Parlour
+Owner Name: Mahesh Jadhav
+Response Style: Like a talkative, fun-loving, witty Marathi bhai.
+... (trimmed for brevity)
+`;
+
+      chatForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const userMessage = userInput.value.trim();
+        if (!userMessage) return;
+
+        addMessageToUI(userMessage, "user");
+        userInput.value = "";
+        showTypingIndicator();
+
+        try {
+          const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: userMessage }] }],
+                systemInstruction: { parts: [{ text: systemInstructionText }] },
+              }),
+            }
+          );
+
+          const data = await response.json();
+          const aiMessage = data.candidates[0].content.parts[0].text;
+          removeTypingIndicator();
+          addMessageToUI(aiMessage, "ai");
+        } catch (err) {
+          removeTypingIndicator();
+          addMessageToUI("माफ करा भाऊ, काहीतरी गडबड झाली आहे! 😓", "ai");
+          console.error(err);
+        }
+      });
+
+      function addMessageToUI(text, sender) {
+        const msg = document.createElement("div");
+        msg.className = sender === "user" ? "user-message" : "ai-message";
+        const avatar =
+          sender === "ai"
+            ? `<img src="aiBhau.jpg" class="avatar"/>`
+            : "";
+        msg.innerHTML = `${avatar}<div class="message-content"><p>${text}</p></div>`;
+        chatWindow.appendChild(msg);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }
+
+      function showTypingIndicator() {
+        const indicator = document.createElement("div");
+        indicator.className = "ai-message typing-indicator";
+        indicator.innerHTML = `
+        <img src="aiBhau.jpg" class="avatar"/>
+        <div class="message-content"><p><span></span><span></span><span></span></p></div>`;
+        chatWindow.appendChild(indicator);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }
+
+      function removeTypingIndicator() {
+        const indicator = chatWindow.querySelector(".typing-indicator");
+        if (indicator) indicator.remove();
+      }
+    </script>
+  </body>
+</html>
